@@ -1,0 +1,65 @@
+body {
+	margin: auto;
+	margin-top: 2%;
+	line-height: 1.4em;
+	word-spacing: 0.2em;
+	font-family: Verdana,Helvetica,sans-serif;
+	text-align: justify;
+	width: 75%;
+	
+}
+#head div {
+	float: center;
+	margin-left: 5%;
+	text-align:center;
+	word-spacing: 0.2em;
+
+}
+
+h1 {
+	font-size: 30px;
+	font-family: Arial,sans-serif;
+	color: #00539F;
+ 	text-shadow: 3px 3px 1px black;
+ 	padding: 20px 0 0 0;
+}
+
+h1:hover {
+	text-shadow: 6px 3px 1px Gold;
+}
+
+#head nav {
+	font-size: 14px;
+	float: right;
+	margin-right: 5%;
+	word-spacing: 0.2em;
+
+}
+
+a {
+	text-decoration: none;
+}
+#head img {
+  float:left;
+
+}
+
+#head #main-head {
+	padding-right: 10%;
+}
+
+
+.clearfix:after {
+	content: " ";
+	clear: both;
+	display: block;
+}
+
+footer {
+	background-color: #FFC600;
+	text-align: center;
+	font-weight: bold;
+}
+
+
+
