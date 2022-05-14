@@ -1,4 +1,4 @@
 # sandeshrajbhandari.github.io
 Personal Project
 
-[sandeshrajbhandari.github.io](sandeshrajbhandari.github.io)
+[sandeshrajbhandari.github.io](https://sandeshrajbhandari.github.io/)
