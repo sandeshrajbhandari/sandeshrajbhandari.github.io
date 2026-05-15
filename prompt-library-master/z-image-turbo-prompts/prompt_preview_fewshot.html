@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>First 10 Image Prompts - Few Shot Instruct</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f3ee;
+      --ink: #202020;
+      --muted: #68635c;
+      --panel: #ffffff;
+      --line: #ded8cf;
+      --accent: #2f6f73;
+      --error: #9d2f2f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 20px 48px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
+      gap: 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 16px 40px rgba(56, 49, 42, 0.08);
+    }
+
+    figure {
+      margin: 0;
+      background: #ebe5dc;
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 9 / 16;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    section {
+      min-width: 0;
+      padding: 4px 4px 2px 0;
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 4px 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 620;
+      overflow-wrap: anywhere;
+    }
+
+    .prompt,
+    .error {
+      margin: 0;
+      font-size: 15px;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: var(--error);
+      font-weight: 650;
+    }
+
+    @media (max-width: 760px) {
+      header {
+        padding-top: 24px;
+      }
+
+      .card {
+        grid-template-columns: 1fr;
+      }
+
+      figure {
+        max-height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>First 10 Image Prompts - Few Shot Instruct</h1>
+    <p class="summary">10 source images paired with generated prompts.</p>
+  </header>
+  <main>
+
+      <article class="card">
+        <figure>
+          <img src="images/1.webp" alt="Source image 1" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 1</div>
+          <h2>images/1.webp · 10.966s</h2>
+          <p class="prompt">A wide-angle interior photography shot of a modern living room corner bathed in soft natural light from an arched window on the left. The central subject is a black leather sofa positioned against a cream-colored wall, adorned with two throw pillows: one featuring a white geometric pattern and another displaying a white bamboo leaf design. In front of the sofa sits a glass coffee table with a curved black base, holding a white ceramic vase containing white orchids and a small black abstract sculpture. A beige textured rug covers the floor beneath the furniture. To the left of the sofa stands a three-panel folding screen with a wooden finish depicting silhouettes of palm trees and plants. Behind the screen is a side table with a lamp emitting warm light. Further to the left, a dark wood cabinet with yellow rattan inserts displays two framed portraits. On the wall above the sofa, there are three decorative items: a circular wooden plaque with a white flower design, a rectangular black frame containing a bamboo illustration, and a partially visible vertical frame on the far right. A chandelier with multiple frosted glass globes hangs from the ceiling. The scene is characterized by warm neutral tones, clean lines, and a minimalist aesthetic.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/2.webp" alt="Source image 2" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 2</div>
+          <h2>images/2.webp · 15.004s</h2>
+          <p class="prompt">A full-length mirror selfie of a young East Asian woman standing in a yoga studio. The subject has long dark hair and is wearing a light purple ribbed tank top with thin straps, paired with high-waisted dark grey leggings that reveal a navel piercing. She holds a white smartphone with a triple-camera lens array vertically in front of her face to take the photo. On her left wrist is a black smartwatch with a round screen, and on her right wrist is a gold bangle bracelet. In the bottom right corner of the frame, there is an illustration overlay of a woman in a yoga pose wearing a navy blue tank top and white leggings. The background features a wooden floor with a herringbone pattern. Two grey yoga mats are laid out on the floor. Behind the subject is a large wooden shelving unit filled with pink Pilates balls arranged in cubbies, with black shoes visible on one shelf. A red feather decal is mounted on the wall to the left. Above, white and blue aerial yoga hammocks hang from the ceiling. The lighting is bright and natural. A mirror selfie photo of a young East Asian woman standing inside a fitness studio, holding a white smartphone vertically with the triple-camera lens array visible, covering her face. She has long dark hair and wears a light purple ribbed tank top with thin straps and high-waisted dark grey leggings with a navel piercing. A black smartwatch is on her left wrist and a gold bracelet is on her right wrist. The background shows a wooden herringbone floor with two grey yoga mats. Behind the woman is a wooden shelving unit containing pink Pilates balls in cubbies, with black shoes visible inside one shelf. To the left of the subject on the wall is a red feather decal. In the bottom right corner of the image, there is an illustration overlay of a woman performing a yoga pose wearing a navy blue tank top and white leggings. The lighting is bright and even.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/3.webp" alt="Source image 3" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 3</div>
+          <h2>images/3.webp · 9.063s</h2>
+          <p class="prompt">A close-up photograph of two hands displaying a manicure with long, almond-shaped nails. The nail polish features a soft gradient from milky white at the cuticle to a pale pink at the tip. Several nails feature hand-painted designs of five-petaled flowers in white and pale blue, resembling cherry blossoms or irises. Specific accent nails are adorned with large, clear faceted rhinestones at the center of the flower design, surrounded by smaller silver rhinestones along the petal edges. The skin is fair with visible texture and natural creases on the knuckles. The background is a blurred indoor setting with neutral tones. Sharp focus on the fingernails in the foreground, shallow depth of field blurring the hands and background. Soft, even lighting highlighting the glossy finish of the nail polish and the sparkle of the gems.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/4.webp" alt="Source image 4" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 4</div>
+          <h2>images/4.webp · 9.567s</h2>
+          <p class="prompt">A top-down studio product photography shot of a silver-colored ball chain bracelet laid flat on a solid matte light blue background. The bracelet features a series of small, round, polished metal beads forming the main loop. Two five-pointed star charms are attached to the front section; one is larger and centrally located with a smooth, flat surface, while a smaller identical star charm is positioned slightly above it to the left. Interspersed between the stars and the main chain are two textured spherical beads featuring a raised dimpled or knurled pattern that catches the light. The clasp mechanism consists of a silver split ring connected to a short extension chain ending in a small, flat heart-shaped tag. The metal has a high-polish finish with sharp specular highlights reflecting the studio lighting. Soft shadows are cast beneath the bracelet beads and charms onto the background surface. High-key lighting, clean composition, minimalist jewelry presentation, macro detail, silver material, smooth texture, 4k resolution.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/5.webp" alt="Source image 5" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 5</div>
+          <h2>images/5.webp · 7.171s</h2>
+          <p class="prompt">A close-up portrait of a young East Asian woman lying down with her head tilted back and eyes closed, resting on a white pillow. She has long black hair that is slightly messy, with several strands sticking up in the air illuminated by bright sunlight coming from a wooden-framed window in the upper background. Her lips are parted slightly. She is wearing a red top. The lighting is high-key and warm, creating a strong backlight effect on her hair and soft shadows on her neck and face.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/6.webp" alt="Source image 6" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 6</div>
+          <h2>images/6.webp · 9.672s</h2>
+          <p class="prompt">A high-resolution product photography shot of a necklace displayed on a dark charcoal gray silk fabric background with visible weave texture and soft folds. The necklace is arranged in an open loop shape, centered in the frame. It consists of round beads in varying shades of translucent green jade-like material, interspersed with cylindrical matte pink beads and small polished silver metal spacer beads. Three prominent pink flower-shaped charms are attached to the strand: one large five-petal flower pendant at the bottom center featuring a central cluster of clear faceted rhinestones, and two smaller identical flowers positioned symmetrically on the upper left and right sides of the arc, each also embellished with small clear stones around the petals. The lighting is soft and diffused from above, creating gentle highlights on the smooth surfaces of the beads and the metallic sheen of the silver spacers. The background fabric remains in deep shadow to contrast with the vibrant pink and green colors of the jewelry.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/7.webp" alt="Source image 7" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 7</div>
+          <h2>images/7.webp · 11.339s</h2>
+          <p class="prompt">A vertical landscape photograph capturing a serene harbor scene under a clear blue sky. The foreground features calm, deep blue water with gentle ripples reflecting the boats and sky. Several small fishing boats are moored in the water. In the immediate foreground on the left, the stern of a yellow boat is visible. Center-left is a white boat with a green cabin roof. To its right is another white boat with an orange buoy attached by a rope. Further back and to the right is a larger white cabin cruiser-style boat. In the lower center, a small white boat with blue painted interior sides and a black outboard motor is anchored. The background consists of a stone quay on both sides of the harbor entrance. On the left side of the quay stands a two-story house with yellow walls and a red gabled roof, featuring multiple white-framed windows. To the right, a white building with a red roof sits near the water&#x27;s edge. A small arched bridge made of stone connects the two sides of the harbor in the middle distance. Behind the buildings and along the shoreline are dense green trees and vegetation covering a hillside that rises into a mountain range in the far background. The lighting is bright and warm, suggesting late afternoon sun, casting soft shadows on the water and structures.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/8.webp" alt="Source image 8" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 8</div>
+          <h2>images/8.webp · 11.4s</h2>
+          <p class="prompt">A high-angle, close-up food photography shot of a Japanese restaurant dining counter made of light-colored wood. In the center foreground, a round white plate holds a fresh salad with mixed greens, yellow corn kernels, shredded carrots, and red tomato slices. To the left, a traditional two-tiered bamboo steamer basket sits open, lined with white parchment paper and filled with white broth; a pair of wooden chopsticks held by a gloved hand is lifting a small piece of food from it. Behind the steamer, on a raised tier, is a dark brown ceramic bowl containing a sashimi platter served on crushed ice, featuring slices of salmon, crab legs, and a green wasabi ball. To the right of the sashimi bowl is a black ceramic warmer with vertical gold calligraphy text reading &quot;すし&quot; (Sushi), &quot;ちりめん&quot; (Chirimen), and &quot;まき&quot; (Maki). In the background, a chef wearing a white traditional Japanese work uniform with floral embroidery on the sleeves stands behind the counter, holding chopsticks. A wooden sign in the upper left background displays vertical black Japanese characters reading &quot;大黒柱&quot; (Daikokubashira). The lighting is bright and warm, highlighting the textures of the food and bamboo.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/9.webp" alt="Source image 9" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 9</div>
+          <h2>images/9.webp · 7.473s</h2>
+          <p class="prompt">A vertical medium shot of a young woman with long, wavy red hair standing outdoors in front of dense green foliage. She is wearing a brown blazer over a white top, with the blazer unbuttoned to reveal the white fabric underneath. Her right arm hangs by her side, revealing three black buttons on the cuff. Sunlight filters through the leaves behind her, creating a rim light effect on her hair and casting soft shadows on her face. She looks back over her shoulder towards the camera with a neutral expression.</p>
+        </section>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="images/10.webp" alt="Source image 10" loading="lazy">
+        </figure>
+        <section>
+          <div class="kicker">Image 10</div>
+          <h2>images/10.webp · 9.615s</h2>
+          <p class="prompt">A vertical photograph captures a gondolier standing at the stern of a traditional black gondola with red cushioned seating, navigating a narrow canal in Venice. The gondolier wears a black and white striped shirt, black trousers, and a dark cap, holding a long oar to steer the boat away from the left bank. The canal is flanked by tall buildings painted in warm tones of terracotta orange and mustard yellow, featuring weathered stucco facades with patches of exposed red brickwork near the waterline. Dark wooden shutters are visible on multiple windows. On the ground floor of a building to the left, there is a small arched doorway above which sits a planter box containing green plants. The canal water reflects the golden hues of the buildings and the bright sky. In the background, a small arched stone bridge connects two sides of the canal further down. The scene is illuminated by warm sunlight casting long shadows.</p>
+        </section>
+      </article>
+  </main>
+</body>
+</html>

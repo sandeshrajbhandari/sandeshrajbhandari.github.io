@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Preview Grid Variations - Sample</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1eb;
+      --ink: #1f2326;
+      --muted: #66706e;
+      --panel: #ffffff;
+      --line: #d9d4ca;
+      --accent: #236c6f;
+      --accent-2: #a44b37;
+      --shadow: 0 18px 44px rgba(35, 42, 40, 0.11);
+      --columns: 4;
+      --image-size: 260px;
+      --gap: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(244, 241, 235, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .topline {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tabs,
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .control {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .control output {
+      color: var(--ink);
+      font-weight: 720;
+      min-width: 32px;
+      text-align: right;
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent);
+      width: 120px;
+    }
+
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .variation-note {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+      gap: var(--gap);
+    }
+
+    .tile {
+      min-width: 0;
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      overflow: visible;
+      box-shadow: var(--shadow);
+    }
+
+    .image-wrap {
+      position: relative;
+      overflow: hidden;
+      background: #e7e1d6;
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .prompt-line {
+      position: relative;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .prompt-line:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .hover-preview {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(100% + 8px);
+      z-index: 30;
+      padding: 12px;
+      background: #15191a;
+      color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      white-space: normal;
+      font-size: 13px;
+      line-height: 1.45;
+      max-height: 230px;
+      overflow: auto;
+    }
+
+    .prompt-line:hover .hover-preview,
+    .prompt-line:focus .hover-preview {
+      display: block;
+    }
+
+    .file {
+      font-size: 12px;
+      color: var(--muted);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .open-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      min-height: 32px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    .open-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .v-contact .tile {
+      box-shadow: none;
+    }
+
+    .v-contact .image-wrap {
+      height: var(--image-size);
+      border-radius: 7px 7px 0 0;
+    }
+
+    .v-contact .body {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .v-contact .number {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      min-width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .v-editorial .grid {
+      align-items: stretch;
+    }
+
+    .v-editorial .tile {
+      min-height: calc(var(--image-size) + 72px);
+      background: #121516;
+      color: #fff;
+      border-color: #24292a;
+    }
+
+    .v-editorial .image-wrap {
+      height: calc(var(--image-size) + 70px);
+      border-radius: 7px;
+    }
+
+    .v-editorial .image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.08) 62%, rgba(0, 0, 0, 0));
+    }
+
+    .v-editorial .body {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      padding: 14px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .v-editorial .file,
+    .v-editorial .prompt-line {
+      color: #fff;
+    }
+
+    .v-editorial .open-btn {
+      justify-self: start;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.34);
+    }
+
+    .v-inspector {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .v-inspector .grid {
+      grid-template-columns: repeat(var(--columns), minmax(110px, 1fr));
+    }
+
+    .v-inspector .tile {
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .v-inspector .tile.selected {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .v-inspector .image-wrap {
+      height: var(--image-size);
+      border-radius: 7px 7px 0 0;
+    }
+
+    .v-inspector .body {
+      padding: 9px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .inspector-panel {
+      position: sticky;
+      top: 150px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .inspector-panel img {
+      width: 100%;
+      height: min(46vh, 480px);
+      object-fit: cover;
+      display: block;
+      background: #e7e1d6;
+    }
+
+    .inspector-copy {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .inspector-copy p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      max-height: 230px;
+      overflow: auto;
+    }
+
+    .v-board .grid {
+      grid-template-columns: repeat(var(--columns), minmax(260px, 1fr));
+    }
+
+    .v-board .tile {
+      display: grid;
+      grid-template-columns: minmax(92px, calc(var(--image-size) * 0.55)) minmax(0, 1fr);
+      min-height: 128px;
+      box-shadow: none;
+    }
+
+    .v-board .image-wrap {
+      height: 100%;
+      min-height: 128px;
+      border-radius: 7px 0 0 7px;
+    }
+
+    .v-board .body {
+      padding: 11px;
+      display: grid;
+      gap: 8px;
+      align-content: center;
+    }
+
+    .v-board .stats {
+      color: var(--accent-2);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    dialog {
+      width: min(980px, calc(100vw - 34px));
+      border: 0;
+      border-radius: 8px;
+      padding: 0;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+    }
+
+    dialog::backdrop {
+      background: rgba(11, 14, 15, 0.58);
+    }
+
+    .modal {
+      display: grid;
+      grid-template-columns: minmax(240px, 43%) minmax(0, 1fr);
+      max-height: min(780px, calc(100vh - 48px));
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .modal img {
+      width: 100%;
+      height: 100%;
+      min-height: 460px;
+      object-fit: cover;
+      background: #e7e1d6;
+    }
+
+    .modal-body {
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .modal-body h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .modal-prompt {
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: end;
+      gap: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .topline {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .v-inspector {
+        grid-template-columns: 1fr;
+      }
+
+      .inspector-panel {
+        position: static;
+      }
+
+      .modal {
+        grid-template-columns: 1fr;
+      }
+
+      .modal img {
+        min-height: 260px;
+        max-height: 48vh;
+      }
+    }
+
+    @media (max-width: 680px) {
+      :root {
+        --columns: 2;
+      }
+
+      main,
+      .bar {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .v-board .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <div class="topline">
+        <div>
+          <h1>Prompt Preview Grid Variations - Sample</h1>
+          <p class="meta"><span id="count"></span> sample prompts. Hover a prompt for a quick read, click any prompt or preview button for the full prompt.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Preview variations">
+          <button class="tab active" type="button" data-variant="contact">Contact Sheet</button>
+          <button class="tab" type="button" data-variant="editorial">Editorial Tiles</button>
+          <button class="tab" type="button" data-variant="inspector">Inspector Grid</button>
+          <button class="tab" type="button" data-variant="board">Prompt Board</button>
+        </div>
+      </div>
+      <div class="controls" aria-label="Grid controls">
+        <label class="control">Columns <input id="columns" type="range" min="2" max="8" value="4"><output id="columnsOut">4</output></label>
+        <label class="control">Image height <input id="imageSize" type="range" min="120" max="440" step="10" value="260"><output id="imageSizeOut">260</output></label>
+        <label class="control">Spacing <input id="gap" type="range" min="6" max="30" value="14"><output id="gapOut">14</output></label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <p class="variation-note" id="variationNote"></p>
+    <section id="app" aria-live="polite"></section>
+  </main>
+
+  <dialog id="promptDialog">
+    <div class="modal">
+      <img id="modalImage" alt="">
+      <div class="modal-body">
+        <div>
+          <h2 id="modalTitle"></h2>
+          <div class="file" id="modalFile"></div>
+        </div>
+        <div class="modal-prompt" id="modalPrompt"></div>
+        <div class="modal-actions">
+          <button class="open-btn" id="copyPrompt" type="button">Copy prompt</button>
+          <button class="open-btn" id="closeDialog" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const records = [{"image": "images/1.webp", "prompt": "A wide-angle interior photography shot of a modern living room corner bathed in soft natural light from an arched window on the left. The central subject is a black leather sofa positioned against a cream-colored wall, adorned with two throw pillows: one featuring a white geometric pattern and another displaying a white bamboo leaf design. In front of the sofa sits a glass coffee table with a curved black base, holding a white ceramic vase containing white orchids and a small black abstract sculpture. A beige textured rug covers the floor beneath the furniture. To the left of the sofa stands a three-panel folding screen with a wooden finish depicting silhouettes of palm trees and plants. Behind the screen is a side table with a lamp emitting warm light. Further to the left, a dark wood cabinet with yellow rattan inserts displays two framed portraits. On the wall above the sofa, there are three decorative items: a circular wooden plaque with a white flower design, a rectangular black frame containing a bamboo illustration, and a partially visible vertical frame on the far right. A chandelier with multiple frosted glass globes hangs from the ceiling. The scene is characterized by warm neutral tones, clean lines, and a minimalist aesthetic.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 10.966}, {"image": "images/2.webp", "prompt": "A full-length mirror selfie of a young East Asian woman standing in a yoga studio. The subject has long dark hair and is wearing a light purple ribbed tank top with thin straps, paired with high-waisted dark grey leggings that reveal a navel piercing. She holds a white smartphone with a triple-camera lens array vertically in front of her face to take the photo. On her left wrist is a black smartwatch with a round screen, and on her right wrist is a gold bangle bracelet. In the bottom right corner of the frame, there is an illustration overlay of a woman in a yoga pose wearing a navy blue tank top and white leggings. The background features a wooden floor with a herringbone pattern. Two grey yoga mats are laid out on the floor. Behind the subject is a large wooden shelving unit filled with pink Pilates balls arranged in cubbies, with black shoes visible on one shelf. A red feather decal is mounted on the wall to the left. Above, white and blue aerial yoga hammocks hang from the ceiling. The lighting is bright and natural. A mirror selfie photo of a young East Asian woman standing inside a fitness studio, holding a white smartphone vertically with the triple-camera lens array visible, covering her face. She has long dark hair and wears a light purple ribbed tank top with thin straps and high-waisted dark grey leggings with a navel piercing. A black smartwatch is on her left wrist and a gold bracelet is on her right wrist. The background shows a wooden herringbone floor with two grey yoga mats. Behind the woman is a wooden shelving unit containing pink Pilates balls in cubbies, with black shoes visible inside one shelf. To the left of the subject on the wall is a red feather decal. In the bottom right corner of the image, there is an illustration overlay of a woman performing a yoga pose wearing a navy blue tank top and white leggings. The lighting is bright and even.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 15.004}, {"image": "images/3.webp", "prompt": "A close-up photograph of two hands displaying a manicure with long, almond-shaped nails. The nail polish features a soft gradient from milky white at the cuticle to a pale pink at the tip. Several nails feature hand-painted designs of five-petaled flowers in white and pale blue, resembling cherry blossoms or irises. Specific accent nails are adorned with large, clear faceted rhinestones at the center of the flower design, surrounded by smaller silver rhinestones along the petal edges. The skin is fair with visible texture and natural creases on the knuckles. The background is a blurred indoor setting with neutral tones. Sharp focus on the fingernails in the foreground, shallow depth of field blurring the hands and background. Soft, even lighting highlighting the glossy finish of the nail polish and the sparkle of the gems.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 9.063}, {"image": "images/4.webp", "prompt": "A top-down studio product photography shot of a silver-colored ball chain bracelet laid flat on a solid matte light blue background. The bracelet features a series of small, round, polished metal beads forming the main loop. Two five-pointed star charms are attached to the front section; one is larger and centrally located with a smooth, flat surface, while a smaller identical star charm is positioned slightly above it to the left. Interspersed between the stars and the main chain are two textured spherical beads featuring a raised dimpled or knurled pattern that catches the light. The clasp mechanism consists of a silver split ring connected to a short extension chain ending in a small, flat heart-shaped tag. The metal has a high-polish finish with sharp specular highlights reflecting the studio lighting. Soft shadows are cast beneath the bracelet beads and charms onto the background surface. High-key lighting, clean composition, minimalist jewelry presentation, macro detail, silver material, smooth texture, 4k resolution.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 9.567}, {"image": "images/5.webp", "prompt": "A close-up portrait of a young East Asian woman lying down with her head tilted back and eyes closed, resting on a white pillow. She has long black hair that is slightly messy, with several strands sticking up in the air illuminated by bright sunlight coming from a wooden-framed window in the upper background. Her lips are parted slightly. She is wearing a red top. The lighting is high-key and warm, creating a strong backlight effect on her hair and soft shadows on her neck and face.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 7.171}, {"image": "images/6.webp", "prompt": "A high-resolution product photography shot of a necklace displayed on a dark charcoal gray silk fabric background with visible weave texture and soft folds. The necklace is arranged in an open loop shape, centered in the frame. It consists of round beads in varying shades of translucent green jade-like material, interspersed with cylindrical matte pink beads and small polished silver metal spacer beads. Three prominent pink flower-shaped charms are attached to the strand: one large five-petal flower pendant at the bottom center featuring a central cluster of clear faceted rhinestones, and two smaller identical flowers positioned symmetrically on the upper left and right sides of the arc, each also embellished with small clear stones around the petals. The lighting is soft and diffused from above, creating gentle highlights on the smooth surfaces of the beads and the metallic sheen of the silver spacers. The background fabric remains in deep shadow to contrast with the vibrant pink and green colors of the jewelry.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 9.672}, {"image": "images/7.webp", "prompt": "A vertical landscape photograph capturing a serene harbor scene under a clear blue sky. The foreground features calm, deep blue water with gentle ripples reflecting the boats and sky. Several small fishing boats are moored in the water. In the immediate foreground on the left, the stern of a yellow boat is visible. Center-left is a white boat with a green cabin roof. To its right is another white boat with an orange buoy attached by a rope. Further back and to the right is a larger white cabin cruiser-style boat. In the lower center, a small white boat with blue painted interior sides and a black outboard motor is anchored. The background consists of a stone quay on both sides of the harbor entrance. On the left side of the quay stands a two-story house with yellow walls and a red gabled roof, featuring multiple white-framed windows. To the right, a white building with a red roof sits near the water's edge. A small arched bridge made of stone connects the two sides of the harbor in the middle distance. Behind the buildings and along the shoreline are dense green trees and vegetation covering a hillside that rises into a mountain range in the far background. The lighting is bright and warm, suggesting late afternoon sun, casting soft shadows on the water and structures.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 11.339}, {"image": "images/8.webp", "prompt": "A high-angle, close-up food photography shot of a Japanese restaurant dining counter made of light-colored wood. In the center foreground, a round white plate holds a fresh salad with mixed greens, yellow corn kernels, shredded carrots, and red tomato slices. To the left, a traditional two-tiered bamboo steamer basket sits open, lined with white parchment paper and filled with white broth; a pair of wooden chopsticks held by a gloved hand is lifting a small piece of food from it. Behind the steamer, on a raised tier, is a dark brown ceramic bowl containing a sashimi platter served on crushed ice, featuring slices of salmon, crab legs, and a green wasabi ball. To the right of the sashimi bowl is a black ceramic warmer with vertical gold calligraphy text reading \"すし\" (Sushi), \"ちりめん\" (Chirimen), and \"まき\" (Maki). In the background, a chef wearing a white traditional Japanese work uniform with floral embroidery on the sleeves stands behind the counter, holding chopsticks. A wooden sign in the upper left background displays vertical black Japanese characters reading \"大黒柱\" (Daikokubashira). The lighting is bright and warm, highlighting the textures of the food and bamboo.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 11.4}, {"image": "images/9.webp", "prompt": "A vertical medium shot of a young woman with long, wavy red hair standing outdoors in front of dense green foliage. She is wearing a brown blazer over a white top, with the blazer unbuttoned to reveal the white fabric underneath. Her right arm hangs by her side, revealing three black buttons on the cuff. Sunlight filters through the leaves behind her, creating a rim light effect on her hair and casting soft shadows on her face. She looks back over her shoulder towards the camera with a neutral expression.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 7.473}, {"image": "images/10.webp", "prompt": "A vertical photograph captures a gondolier standing at the stern of a traditional black gondola with red cushioned seating, navigating a narrow canal in Venice. The gondolier wears a black and white striped shirt, black trousers, and a dark cap, holding a long oar to steer the boat away from the left bank. The canal is flanked by tall buildings painted in warm tones of terracotta orange and mustard yellow, featuring weathered stucco facades with patches of exposed red brickwork near the waterline. Dark wooden shutters are visible on multiple windows. On the ground floor of a building to the left, there is a small arched doorway above which sits a planter box containing green plants. The canal water reflects the golden hues of the buildings and the bright sky. In the background, a small arched stone bridge connects two sides of the canal further down. The scene is illuminated by warm sunlight casting long shadows.", "model": "Qwen3.5-9B-UD-Q4_K_XL:instruct", "elapsed_seconds": 9.615}];
+    const state = { variant: "contact", selected: 0 };
+    const notes = {
+      contact: "Variation 1: a compact contact sheet for scanning many images quickly.",
+      editorial: "Variation 2: larger visual tiles with prompt text over the image for a more visual review pass.",
+      inspector: "Variation 3: a working grid with a sticky inspector panel for focused prompt editing or comparison.",
+      board: "Variation 4: a denser prompt board with horizontal tiles for prompt-heavy review."
+    };
+
+    const app = document.getElementById("app");
+    const note = document.getElementById("variationNote");
+    const root = document.documentElement;
+    const dialog = document.getElementById("promptDialog");
+    const modalImage = document.getElementById("modalImage");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalFile = document.getElementById("modalFile");
+    const modalPrompt = document.getElementById("modalPrompt");
+    const copyPrompt = document.getElementById("copyPrompt");
+
+    document.getElementById("count").textContent = records.length;
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function wordCount(prompt) {
+      return String(prompt || "").trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function promptLine(record, index) {
+      const prompt = escapeHtml(record.prompt || record.error || "No prompt available.");
+      return `<div class="prompt-line" tabindex="0" role="button" data-index="${index}" title="Open full prompt">${prompt}<span class="hover-preview">${prompt}</span></div>`;
+    }
+
+    function openDialog(index) {
+      const record = records[index];
+      modalImage.src = record.image;
+      modalImage.alt = `Source image ${index + 1}`;
+      modalTitle.textContent = `Image ${index + 1}`;
+      modalFile.textContent = record.image;
+      modalPrompt.textContent = record.prompt || record.error || "No prompt available.";
+      copyPrompt.dataset.prompt = modalPrompt.textContent;
+      dialog.showModal();
+    }
+
+    function contactTile(record, index) {
+      return `<article class="tile">
+        <div class="image-wrap"><img src="${escapeHtml(record.image)}" alt="Image ${index + 1}" loading="lazy"><div class="number">${index + 1}</div></div>
+        <div class="body">
+          <div class="file">${escapeHtml(record.image)}</div>
+          ${promptLine(record, index)}
+          <button class="open-btn" type="button" data-index="${index}">Preview</button>
+        </div>
+      </article>`;
+    }
+
+    function editorialTile(record, index) {
+      return `<article class="tile">
+        <div class="image-wrap"><img src="${escapeHtml(record.image)}" alt="Image ${index + 1}" loading="lazy"></div>
+        <div class="body">
+          <div class="file">Image ${index + 1} / ${escapeHtml(record.image)}</div>
+          ${promptLine(record, index)}
+          <button class="open-btn" type="button" data-index="${index}">Open prompt</button>
+        </div>
+      </article>`;
+    }
+
+    function inspectorTile(record, index) {
+      const selected = index === state.selected ? " selected" : "";
+      return `<article class="tile${selected}" data-select="${index}" tabindex="0">
+        <div class="image-wrap"><img src="${escapeHtml(record.image)}" alt="Image ${index + 1}" loading="lazy"></div>
+        <div class="body">
+          <div class="file">Image ${index + 1}</div>
+          ${promptLine(record, index)}
+        </div>
+      </article>`;
+    }
+
+    function boardTile(record, index) {
+      return `<article class="tile">
+        <div class="image-wrap"><img src="${escapeHtml(record.image)}" alt="Image ${index + 1}" loading="lazy"></div>
+        <div class="body">
+          <div class="file">${escapeHtml(record.image)}</div>
+          <div class="stats">${wordCount(record.prompt)} words</div>
+          ${promptLine(record, index)}
+          <button class="open-btn" type="button" data-index="${index}">Read full</button>
+        </div>
+      </article>`;
+    }
+
+    function renderInspectorPanel() {
+      const record = records[state.selected] || records[0];
+      return `<aside class="inspector-panel">
+        <img src="${escapeHtml(record.image)}" alt="Selected image">
+        <div class="inspector-copy">
+          <div>
+            <div class="file">Selected: ${escapeHtml(record.image)}</div>
+            <strong>Image ${state.selected + 1}</strong>
+          </div>
+          <p>${escapeHtml(record.prompt || record.error || "No prompt available.")}</p>
+          <button class="open-btn" type="button" data-index="${state.selected}">Open modal preview</button>
+        </div>
+      </aside>`;
+    }
+
+    function render() {
+      note.textContent = notes[state.variant];
+      document.querySelectorAll(".tab").forEach((button) => {
+        button.classList.toggle("active", button.dataset.variant === state.variant);
+      });
+
+      if (state.variant === "contact") {
+        app.className = "v-contact";
+        app.innerHTML = `<div class="grid">${records.map(contactTile).join("")}</div>`;
+      }
+      if (state.variant === "editorial") {
+        app.className = "v-editorial";
+        app.innerHTML = `<div class="grid">${records.map(editorialTile).join("")}</div>`;
+      }
+      if (state.variant === "inspector") {
+        app.className = "v-inspector";
+        app.innerHTML = `<div class="grid">${records.map(inspectorTile).join("")}</div>${renderInspectorPanel()}`;
+      }
+      if (state.variant === "board") {
+        app.className = "v-board";
+        app.innerHTML = `<div class="grid">${records.map(boardTile).join("")}</div>`;
+      }
+    }
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.variant = button.dataset.variant;
+        render();
+      });
+    });
+
+    function bindRange(id, cssVar, suffix) {
+      const input = document.getElementById(id);
+      const out = document.getElementById(`${id}Out`);
+      function apply() {
+        out.textContent = input.value;
+        root.style.setProperty(cssVar, `${input.value}${suffix}`);
+      }
+      input.addEventListener("input", apply);
+      apply();
+    }
+
+    bindRange("columns", "--columns", "");
+    bindRange("imageSize", "--image-size", "px");
+    bindRange("gap", "--gap", "px");
+
+    app.addEventListener("click", (event) => {
+      const selectTile = event.target.closest("[data-select]");
+      if (selectTile) {
+        state.selected = Number(selectTile.dataset.select);
+        render();
+        return;
+      }
+
+      const openTarget = event.target.closest("[data-index]");
+      if (openTarget) {
+        openDialog(Number(openTarget.dataset.index));
+      }
+    });
+
+    app.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const target = event.target.closest("[data-index], [data-select]");
+      if (!target) return;
+      event.preventDefault();
+      if (target.dataset.select) {
+        state.selected = Number(target.dataset.select);
+        render();
+      } else {
+        openDialog(Number(target.dataset.index));
+      }
+    });
+
+    document.getElementById("closeDialog").addEventListener("click", () => dialog.close());
+    copyPrompt.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(copyPrompt.dataset.prompt || "");
+      copyPrompt.textContent = "Copied";
+      setTimeout(() => (copyPrompt.textContent = "Copy prompt"), 1200);
+    });
+
+    render();
+  </script>
+</body>
+</html>
