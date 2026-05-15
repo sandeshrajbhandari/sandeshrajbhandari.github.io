@@ -46,6 +46,8 @@
     pageButtons: document.getElementById("page-buttons"),
     modal: document.getElementById("detail-modal"),
     modalImage: document.getElementById("modal-image"),
+    modalPrev: document.getElementById("modal-prev"),
+    modalNext: document.getElementById("modal-next"),
     modalTitle: document.getElementById("modal-title"),
     modalCategory: document.getElementById("modal-category"),
     modalModel: document.getElementById("modal-model"),
@@ -73,7 +75,7 @@
 
   function bindEvents() {
     nodes.searchInput.addEventListener("input", function (event) {
-      state.query = event.target.value.trim().toLowerCase();
+      state.query = event.target.value.trim();
       state.page = 1;
       renderGallery();
     });
@@ -112,9 +114,27 @@
     });
 
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && !nodes.modal.hidden) {
-        closeModal();
+      if (nodes.modal.hidden) {
+        return;
       }
+
+      if (event.key === "Escape") {
+        closeModal();
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        navigateModal(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        navigateModal(1);
+      }
+    });
+
+    nodes.modalPrev.addEventListener("click", function () {
+      navigateModal(-1);
+    });
+
+    nodes.modalNext.addEventListener("click", function () {
+      navigateModal(1);
     });
 
     nodes.modalCopyPrompt.addEventListener("click", function () {
@@ -149,17 +169,7 @@
       categoryLabel: category.label,
       tags: tags,
       tagKeys: tagKeys,
-      searchText: [
-        title,
-        image,
-        item.fallbackImage || "",
-        prompt,
-        item.model || "",
-        category.label,
-        tags.join(" ")
-      ]
-        .join(" ")
-        .toLowerCase()
+      promptSearchText: normalizeSearchText(prompt)
     };
   }
 
@@ -326,9 +336,66 @@
     return classifiedItems.filter(function (item) {
       var matchesCategory = state.category === "all" || item.categoryKey === state.category;
       var matchesTag = state.tag === "all" || item.tagKeys.indexOf(state.tag) !== -1;
-      var matchesSearch = !state.query || item.searchText.indexOf(state.query) !== -1;
+      var matchesSearch = matchesPromptSearch(item);
       return matchesCategory && matchesTag && matchesSearch;
     }).sort(compareItems);
+  }
+
+  function matchesPromptSearch(item) {
+    var groups = parseSearchQuery(state.query);
+    if (!groups.length) {
+      return true;
+    }
+
+    return groups.some(function (group) {
+      return group.every(function (term) {
+        return item.promptSearchText.indexOf(term) !== -1;
+      });
+    });
+  }
+
+  function parseSearchQuery(query) {
+    var groups = [[]];
+    var match;
+    var tokenPattern = /"([^"]+)"|(\S+)/g;
+
+    while ((match = tokenPattern.exec(String(query || "")))) {
+      var rawToken = match[1] || match[2] || "";
+      var isQuoted = match[1] !== undefined;
+
+      if (!isQuoted && rawToken === "OR") {
+        if (groups[groups.length - 1].length) {
+          groups.push([]);
+        }
+        continue;
+      }
+
+      var normalized = normalizeSearchText(rawToken);
+      if (!normalized) {
+        continue;
+      }
+
+      if (isQuoted) {
+        groups[groups.length - 1].push(normalized);
+      } else {
+        normalized.split(" ").forEach(function (term) {
+          if (term) {
+            groups[groups.length - 1].push(term);
+          }
+        });
+      }
+    }
+
+    return groups.filter(function (group) {
+      return group.length;
+    });
+  }
+
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
   }
 
   function compareItems(a, b) {
@@ -378,7 +445,7 @@
     var copyButton = document.createElement("button");
     copyButton.type = "button";
     copyButton.className = "copy-prompt-button";
-    copyButton.textContent = "⧉";
+    copyButton.textContent = "Copy";
     copyButton.title = "Copy prompt";
     copyButton.setAttribute("aria-label", "Copy prompt for " + item.title);
     copyButton.addEventListener("click", function () {
@@ -521,6 +588,18 @@
 
   function openModal(item, trigger) {
     state.lastFocusedElement = trigger;
+    renderModalItem(item);
+
+    nodes.modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    updateModalNav();
+    var closeButton = nodes.modal.querySelector(".modal-close");
+    if (closeButton) {
+      closeButton.focus();
+    }
+  }
+
+  function renderModalItem(item) {
     state.activeModalItem = item;
     state.activePrompt = "main";
 
@@ -537,12 +616,7 @@
     });
     renderPromptTabs(item);
 
-    nodes.modal.hidden = false;
-    document.body.style.overflow = "hidden";
-    var closeButton = nodes.modal.querySelector(".modal-close");
-    if (closeButton) {
-      closeButton.focus();
-    }
+    updateModalNav();
   }
 
   function closeModal() {
@@ -556,6 +630,31 @@
       state.lastFocusedElement.focus();
       state.lastFocusedElement = null;
     }
+  }
+
+  function navigateModal(direction) {
+    if (!state.activeModalItem) {
+      return;
+    }
+
+    var items = getFilteredItems();
+    var currentIndex = items.findIndex(function (item) {
+      return item.id === state.activeModalItem.id;
+    });
+
+    if (currentIndex === -1 || items.length < 2) {
+      return;
+    }
+
+    var nextIndex = (currentIndex + direction + items.length) % items.length;
+    renderModalItem(items[nextIndex]);
+  }
+
+  function updateModalNav() {
+    var items = getFilteredItems();
+    var disabled = items.length < 2;
+    nodes.modalPrev.disabled = disabled;
+    nodes.modalNext.disabled = disabled;
   }
 
   function scrollToGalleryTop() {
@@ -634,7 +733,7 @@
       ? activeVersion.text
       : "No prompt available.";
     nodes.modalPromptPanel.scrollTop = 0;
-    nodes.modalCopyPrompt.textContent = "Copy";
+    nodes.modalCopyPrompt.textContent = "Copy prompt";
   }
 
   function getCopyPrompt(item) {
@@ -656,7 +755,7 @@
 
     copyText(text).then(function () {
       var originalText = button.textContent;
-      button.textContent = "✓";
+      button.textContent = "Copied";
       window.setTimeout(function () {
         button.textContent = originalText;
       }, 1200);
