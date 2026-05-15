@@ -1,33 +1,347 @@
-<!-- Code Written By Sandesh Rajbhandari -->
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Home S</title>
-		<link rel="stylesheet" href="styles/main.css">
-	</head>
-	<body>
-		<div id="head" class="clearfix">
-          
-          <div>
-		  	<h1>Home S</h1>
-          	<span id="quote"></span>
-          </div>
-          <nav>
-                <a href="#">Home</a>
-          		<a href="#">About</a>
-          		<a href="#">Contact Us</a>
-          </nav>
-         </div>
-		<div id="content">
-			<p> Hello!
-			</p>		
-		</div>
-		<footer>Copyright © 2015</footer>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sandesh Rajbhandari</title>
 
-	
-	
-	</body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #d8d2c2;
+      color: #1f1f1f;
+      font-family: "Courier New", Courier, monospace;
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    .paper {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #eee8d8;
+      border: 2px solid #1f1f1f;
+      box-shadow: 10px 10px 0 #1f1f1f;
+      padding: 36px;
+      position: relative;
+    }
+
+    .paper::before,
+    .paper::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 18px;
+      height: 100%;
+      background-image: radial-gradient(#1f1f1f 3px, transparent 4px);
+      background-size: 18px 28px;
+      opacity: 0.75;
+    }
+
+    .paper::before {
+      left: -34px;
+    }
+
+    .paper::after {
+      right: -34px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 2px dashed #1f1f1f;
+      padding-bottom: 16px;
+      margin-bottom: 36px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #1f1f1f;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background: #1f1f1f;
+      color: #eee8d8;
+    }
+
+    .receipt-title {
+      text-align: center;
+      border-bottom: 2px dashed #1f1f1f;
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+    }
+
+    .receipt-title p {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 9vw, 6rem);
+      line-height: 0.9;
+      margin: 20px 0;
+      text-transform: uppercase;
+      letter-spacing: -4px;
+    }
+
+    .dot-text {
+      color: transparent;
+      -webkit-text-stroke: 1px #1f1f1f;
+      text-shadow:
+        2px 2px 0 #1f1f1f,
+        4px 4px 0 rgba(31, 31, 31, 0.15);
+    }
+
+    .intro {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      border: 2px solid #1f1f1f;
+      padding: 10px 16px;
+      color: #1f1f1f;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: bold;
+      background: transparent;
+    }
+
+    .btn:hover {
+      background: #1f1f1f;
+      color: #eee8d8;
+    }
+
+    section {
+      border-top: 2px dashed #1f1f1f;
+      padding-top: 32px;
+      margin-top: 40px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 2px solid #1f1f1f;
+      padding: 18px;
+      background:
+        linear-gradient(rgba(31,31,31,0.04) 1px, transparent 1px);
+      background-size: 100% 8px;
+      min-height: 160px;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-list span {
+      border: 1px dashed #1f1f1f;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .ascii {
+      white-space: pre;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    footer {
+      border-top: 2px dashed #1f1f1f;
+      margin-top: 40px;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      .paper {
+        padding: 22px;
+        box-shadow: 6px 6px 0 #1f1f1f;
+      }
+
+      .paper::before,
+      .paper::after {
+        display: none;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="paper">
+
+    <div class="topbar">
+      <div>*** PERSONAL SITE ***</div>
+      <nav>
+        <a href="#work">WORK</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#about">ABOUT</a>
+        <a href="mailto:sandeshrb87@gmail.com">CONTACT</a>
+      </nav>
+      <div>STATUS: ONLINE</div>
+    </div>
+
+    <header class="receipt-title">
+      <p>24-pin dot matrix portfolio output</p>
+
+      <h1>
+        Hello<br>
+        <span class="dot-text">World</span>
+      </h1>
+
+      <p class="intro">
+        I'm Sandesh Rajbhandari, a full-stack developer and AI engineer building
+        practical software, machine learning systems, creative tools, and web products.
+      </p>
+
+      <div class="buttons">
+        <a class="btn" href="#work">View Work</a>
+        <a class="btn" href="https://github.com/sandeshrajbhandari">GitHub</a>
+        <a class="btn" href="mailto:sandeshrb87@gmail.com">Email Me</a>
+      </div>
+    </header>
+
+    <div class="ascii">
++--------------------------------------------------+
+| SYSTEM: SAN-DESH/PORTFOLIO                       |
+| MODE: BUILDING WEB APPS + AI TOOLS               |
+| LOCATION: AUSTRALIA                              |
++--------------------------------------------------+
+    </div>
+
+    <section id="work">
+      <h2>> Selected Work</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>01 / Masha</h3>
+          <p>
+            Dating app product work involving full-stack systems,
+            AI features, cloud functions, and recommendation logic.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>02 / Fraud Detection</h3>
+          <p>
+            ML pipelines for detecting suspicious users through behaviour,
+            messaging patterns, tabular features, and anomaly signals.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>03 / Influencer SaaS</h3>
+          <p>
+            Product concept for connecting brands and creators with campaign
+            creation, AI matching, and analytics dashboards.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>04 / Creative AI</h3>
+          <p>
+            Experiments with local LLMs, image generation, motion design,
+            content systems, and visual storytelling workflows.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>> Skills Printed</h2>
+
+      <div class="skill-list">
+        <span>React</span>
+        <span>Next.js</span>
+        <span>Python</span>
+        <span>FastAPI</span>
+        <span>PostgreSQL</span>
+        <span>Firebase</span>
+        <span>GCP</span>
+        <span>Machine Learning</span>
+        <span>LLMs</span>
+        <span>UI Systems</span>
+      </div>
+    </section>
+
+    <section id="about">
+      <h2>> About File</h2>
+
+      <div class="card">
+        <p>
+          I like building useful things fast, then improving them through design,
+          data, and real user feedback. My work blends engineering, AI, product
+          thinking, and creative experimentation.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      END OF PRINT — © 2026 SANDESH RAJBHANDARI
+    </footer>
+
+  </main>
+
+</body>
 </html>
-
